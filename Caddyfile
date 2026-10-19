@@ -14,7 +14,8 @@
 }
 
 (lb_settings) {
-	lb_policy round_robin
+	# sticky sessions: pin each client to the same replica so oauth state/session survives the google callback
+	lb_policy cookie
 	lb_retries 100
 	lb_try_duration 10s
 	lb_try_interval 250ms
@@ -44,15 +45,17 @@
 			dial_timeout 30s
 			versions ipv4 ipv6
 		}
-		header_up X-Forwarded-Proto {scheme}
-        header_up X-Forwarded-For {$FRONTEND_DOMAIN}
+		# railway terminates tls at its edge, so caddy only ever sees http
+		# tell the upstream the original scheme was https so oauth redirect_uris are built as https://
+		header_up X-Forwarded-Proto https
+
 		# configure load balancing settings
 		import lb_settings
 
 		# configure passive health checks
 		import passive_health_checks
 
-		# sets the Host header to the header to the dynamic name and port options
-		header_up Host {upstream_hostport}
+		# the original Host header (the public domain) is passed through untouched,
+		# so the upstream builds oauth callback urls that match the google console
 	}
 }
