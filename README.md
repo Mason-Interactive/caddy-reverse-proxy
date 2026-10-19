@@ -8,11 +8,10 @@ Access the frontend from `/*` and access the backend from `/api/*` on the same d
 
 **Frontend - Vue 3:** https://mysite.up.railway.app/
 
-**Backend - Go Mux:** https://mysite.up.railway.app/api/
 
 The proxy configurations are done in the [`Caddyfile`](https://github.com/brody192/reverse-proxy/blob/main/Caddyfile) everything is commented for your ease of use!
 
-When deploying your Reverse Proxy service it will require you to set four service variables: **FRONTEND_DOMAIN** / **FRONTEND_PORT** and **BACKEND_DOMAIN** / **BACKEND_PORT**
+When deploying your Reverse Proxy service it will require you to set two service variables: **FRONTEND_DOMAIN** / **FRONTEND_PORT**.
 
 **Note:** You will first need to have set a fixed `PORT` variable in both the frontend and backend services before deploying this template.
 
@@ -24,8 +23,6 @@ Example:
 FRONTEND_DOMAIN = ${{Frontend.RAILWAY_PRIVATE_DOMAIN}}
 FRONTEND_PORT = ${{Frontend.PORT}}
 
-BACKEND_DOMAIN = ${{Backend.RAILWAY_PRIVATE_DOMAIN}}
-BACKEND_PORT = ${{Backend.PORT}}
 ```
 
 **Relevant Caddy documentation:**
